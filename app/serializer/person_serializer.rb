@@ -13,5 +13,5 @@ class PersonSerializer < ActiveModel::Serializer
     object.record_count
   end
 
-  belongs_to :organisation
+  belongs_to :organisation, key: 'org'
 end

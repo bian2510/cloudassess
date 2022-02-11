@@ -1,8 +1,8 @@
 Rails.application.routes.draw do
   root to: 'people#index'
 
-  resources :people, only: [:index, :show, :update]
-  
+  resources :people, only: [:index, :show, :edit, :update]
+
   namespace :api do
     resources :people, only: [:index, :show, :update]
   end
