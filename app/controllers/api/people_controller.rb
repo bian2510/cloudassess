@@ -1,7 +1,8 @@
 class Api::PeopleController < ApplicationController
-  
+  skip_before_action :verify_authenticity_token
+
   def index
-    render json: Person.search(params[:search]), status: :ok
+    render json: Person.where(filtering_params), status: :ok
   end
   
   def show
@@ -9,8 +10,9 @@ class Api::PeopleController < ApplicationController
   end
 
   def update
-    if @person.update(person_params)
-      render json: @person, status: :ok
+    person = Person.find(params['id'])
+    if person.update(person_params)
+      render json: person, status: :ok
     else
       render json: [], status: :unprocessable_entity
     end
@@ -20,6 +22,10 @@ class Api::PeopleController < ApplicationController
 
   def person_params
     params.require(:person).permit(:first_name, :last_name, :organisation_id, :record_count)
+  end
+
+  def filtering_params
+    params.permit(:id, :first_name, :last_name, :organisation_id, :record_count).to_h
   end
 end
   
